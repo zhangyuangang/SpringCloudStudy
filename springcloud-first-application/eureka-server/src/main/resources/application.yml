@@ -1,15 +1,40 @@
+
+###########   Eureka  配置   ##################
+
 server:
-  port: 8761
+  port: 8181
 
 eureka:
   instance:
     hostname: localhost
   client:
-    registerWithEureka: false
-    fetchRegistry: false
+    registerWithEureka: false       #false表示不向注册中心注册自己。
+    fetchRegistry: false            #false表示自己端就是注册中心，我的职责就是维护服务实例，并不需要去检索服务
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
 spring:
   application:
-    name: eurka-server
+    name: eureka-server
+
+
+
+
+###########   Eureka   集群  配置   ##################
+
+#server:
+#  port: 8183
+#
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    registerWithEureka: false       #false表示不向注册中心注册自己。
+#    #fetchRegistry: false            #false表示自己端就是注册中心，我的职责就是维护服务实例，并不需要去检索服务
+#    serviceUrl:
+#      #defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+#      defaultZone: http://localhost:8181/eureka/,http://localhost:8182/eureka/,http://localhost:8183/eureka/
+#
+#spring:
+#  application:
+#    name: eureka-server${server.port}
