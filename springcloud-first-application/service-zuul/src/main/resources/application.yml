@@ -9,9 +9,12 @@ spring:
     name: service-zuul
 zuul:
   routes:
-    api-a:
-      path: /api-a/**
+    ribbon:
+      path: /ribbon/**
       serviceId: service-ribbon
-    api-b:
-      path: /api-b/**
+    feign:
+      path: /feign/**
       serviceId: service-feign
+    auth:
+      path: /auth/**
+      serviceId: auth-server

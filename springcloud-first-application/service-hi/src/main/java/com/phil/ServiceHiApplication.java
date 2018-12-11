@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
@@ -21,20 +23,28 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableCircuitBreaker
 public class ServiceHiApplication {
 
-	/**
-	 * 访问地址 http://localhost:8762/actuator/hystrix.stream
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		SpringApplication.run( ServiceHiApplication.class, args );
-	}
+    /**
+     * 访问地址 http://localhost:8762/actuator/hystrix.stream
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(ServiceHiApplication.class, args);
+    }
 
-	@Value("${server.port}")
-	String port;
+    @Value("${server.port}")
+    String port;
 
-	@RequestMapping("/hi")
-	public String home(@RequestParam(value = "name", defaultValue = "phil") String name) {
-		return "hi " + name + " ,i am from port:" + port;
-	}
+    @RequestMapping("/hi")
+    public String home(@RequestParam(value = "name", defaultValue = "phil") String name, HttpServletRequest request) {
+        String jWTToken = request.getHeader("JWTToken");
+        System.out.println("jWTToken=" + jWTToken);
+
+        //不用自己从jWTToken中读取，直接读取"X-Req-UserName"就行了
+        //因为Zuul中完成了解析UserName并且放到报文头中了
+        String userName = request.getHeader("X-Req-UserName");
+        System.out.println("userName=" + userName);
+        return "hi " + name + " ,i am from port:" + port;
+    }
 
 }
