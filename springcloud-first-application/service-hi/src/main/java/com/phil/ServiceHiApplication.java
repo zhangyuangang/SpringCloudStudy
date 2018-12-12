@@ -37,13 +37,6 @@ public class ServiceHiApplication {
 
     @RequestMapping("/hi")
     public String home(@RequestParam(value = "name", defaultValue = "phil") String name, HttpServletRequest request) {
-        String jWTToken = request.getHeader("JWTToken");
-        System.out.println("jWTToken=" + jWTToken);
-
-        //不用自己从jWTToken中读取，直接读取"X-Req-UserName"就行了
-        //因为Zuul中完成了解析UserName并且放到报文头中了
-        String userName = request.getHeader("X-Req-UserName");
-        System.out.println("userName=" + userName);
         return "hi " + name + " ,i am from port:" + port;
     }
 
