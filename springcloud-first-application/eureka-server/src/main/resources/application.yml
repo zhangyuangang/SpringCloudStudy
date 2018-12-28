@@ -7,13 +7,17 @@ server:
 eureka:
   instance:
     hostname: localhost
+    instance-id: ${spring.application.name}:${server.port}
+    lease-renewal-interval-in-seconds: 30  #服务续约时间   默认为30S
+    lease-expiration-duration-in-seconds: 90 #服务失效时间   默认为90S
   client:
     registerWithEureka: false       #false表示不向注册中心注册自己。
     fetchRegistry: false            #false表示自己端就是注册中心，我的职责就是维护服务实例，并不需要去检索服务
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    registry-fetch-interval-seconds: 10 #eureka client间隔多久去拉取服务注册信息，默认为30秒
   server:
-      enable-self-preservation: false
+    enable-self-preservation: false        #关掉自我保护
 
 
 spring:
@@ -21,26 +25,18 @@ spring:
     name: eureka-server
 
 
-
-
-
-
-
 ###########   Eureka   集群  配置   ##################
 
 #server:
-#  port: 8183
+#  port: 8381
+#
+#spring:
+#  application:
+#    name: eureka-server
 #
 #eureka:
 #  instance:
 #    hostname: localhost
 #  client:
-#    registerWithEureka: false       #false表示不向注册中心注册自己。
-#    #fetchRegistry: false            #false表示自己端就是注册中心，我的职责就是维护服务实例，并不需要去检索服务
 #    serviceUrl:
-#      #defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-#      defaultZone: http://localhost:8181/eureka/,http://localhost:8182/eureka/,http://localhost:8183/eureka/
-#
-#spring:
-#  application:
-#    name: eureka-server${server.port}
+#      defaultZone: http://peer2:8382/eureka/, http://peer3:8383/eureka/
